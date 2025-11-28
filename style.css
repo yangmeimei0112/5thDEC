@@ -1,75 +1,72 @@
-/* 設定中文字體優化 */
-body {
-    font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
-}
+/* --- 全域設定 --- */
+body { font-family: 'Roboto', 'Segoe UI', 'Microsoft JhengHei', sans-serif; background-color: #f0ebf8; }
+.min-vh-100 { min-height: 100vh; }
 
-/* 讓登入畫面在垂直方向真的佔滿螢幕 */
-.min-vh-100 {
-    min-height: 100vh;
+/* Google 風格卡片 */
+.google-card {
+    background: #fff;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+    margin-bottom: 12px;
+    transition: box-shadow 0.2s;
 }
+.border-top-purple { border-top: 10px solid #673ab7; border-top-left-radius: 8px; border-top-right-radius: 8px; }
+.bg-purple { background-color: #673ab7; }
 
-/* 讓功能卡片滑鼠移過去有浮起效果 */
-.hover-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-}
+/* 編輯器選中效果 */
+.question-card { border-left: 6px solid transparent; transition: all 0.2s; position: relative; }
+.question-card:focus-within, .question-card:hover { border-left-color: #4285f4; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
 
-.hover-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+/* 動態選項輸入框 (仿 Google 底線風格) */
+.dynamic-option {
+    border: none !important;
+    border-bottom: 1px solid #ddd !important;
+    border-radius: 0 !important;
+    background: transparent;
+    padding: 5px 0;
 }
+.dynamic-option:focus {
+    border-bottom: 2px solid #673ab7 !important;
+    box-shadow: none !important;
+    background: #f8f9fa;
+}
+.add-option-link { color: #666; cursor: pointer; padding: 5px 10px; display: inline-block; font-size: 0.9rem; margin-top: 5px; }
+.add-option-link:hover { background-color: #f1f3f4; border-radius: 4px; }
+.add-other-link { color: #1a73e8; font-weight: 500; }
 
-/* 登入卡片搖晃動畫 (錯誤時使用) */
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    50% { transform: translateX(10px); }
-    75% { transform: translateX(-10px); }
-    100% { transform: translateX(0); }
-}
+/* 懸浮工具列 */
+.floating-sidebar { position: fixed; right: max(20px, calc(50% - 460px)); top: 180px; display: flex; flex-direction: column; background: white; padding: 10px 5px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 1050; }
+@media (max-width: 900px) { .floating-sidebar { position: fixed; bottom: 20px; right: 20px; top: auto; flex-direction: row; gap: 10px; padding: 5px 15px; border-radius: 50px; } }
 
-.shake-animation {
-    animation: shake 0.3s;
-}
-/* --- 討論區樣式 --- */
+/* 標題輸入框 */
+.title-input { border-bottom: 1px solid #e0e0e0 !important; border-radius: 0; padding: 5px 0; }
+.title-input:focus { border-bottom: 2px solid #673ab7 !important; box-shadow: none; }
+.desc-input { border-bottom: 1px solid #e0e0e0 !important; border-radius: 0; resize: none; font-size: 0.9rem; }
+.desc-input:focus { border-bottom: 1px solid #e0e0e0 !important; box-shadow: none; }
 
-/* 訊息氣泡的共用設定 */
-.message-bubble {
-    max-width: 75%;
-    padding: 10px 15px;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    position: relative;
-    word-wrap: break-word; /* 防止長文字破版 */
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
+/* 頂部 Tab */
+.google-tabs { display: flex; gap: 20px; font-size: 0.9rem; font-weight: 500; color: #5f6368; text-transform: uppercase; }
+.google-tabs .tab { padding: 10px 15px; cursor: pointer; border-bottom: 3px solid transparent; }
+.google-tabs .tab.active { color: #673ab7; border-bottom-color: #673ab7; }
 
-/* 別人的留言 (靠左、白色) */
-.message-left {
-    align-self: flex-start;
-    background-color: #ffffff;
-    border-bottom-left-radius: 2px; /* 小尖角 */
-    margin-right: auto; /* 靠左 */
-}
+/* 按鈕與圖示 */
+.btn-icon { border: none; background: transparent; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+.btn-icon:hover { background-color: rgba(60,64,67,0.08); }
+.remove-opt-btn { color: #5f6368; }
+.remove-opt-btn:hover { color: #d93025; }
 
-/* 自己的留言 (靠右、藍色) */
-.message-right {
-    align-self: flex-end;
-    background-color: #d1e7dd; /* 淺綠色 (類似LINE) */
-    color: #0f5132;
-    border-bottom-right-radius: 2px;
-    margin-left: auto; /* 靠右 */
-}
-
-/* 留言者名字的小字 */
-.message-info {
-    font-size: 0.75rem;
-    margin-bottom: 4px;
-    color: #6c757d;
-}
-
-/* 讓聊天容器變成 Flex 排版，方便左右對齊 */
-.chat-wrapper {
-    display: flex;
-    flex-direction: column;
-}
+/* --- 舊有的通用樣式 --- */
+.hover-card { transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+.hover-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } 100% { transform: translateX(0); } }
+.shake-animation { animation: shake 0.3s; }
+.message-bubble { max-width: 75%; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; }
+.message-left { align-self: flex-start; background: #fff; margin-right: auto; }
+.message-right { align-self: flex-end; background: #d1e7dd; color: #0f5132; margin-left: auto; }
+.chat-wrapper { display: flex; flex-direction: column; }
+.grid-table th, .grid-table td { text-align: center; vertical-align: middle; padding: 10px; }
+.grid-table th:first-child, .grid-table td:first-child { text-align: left; font-weight: bold; min-width: 150px; background-color: #f8f9fa; }
+.chart-container { position: relative; height: 300px; width: 100%; }
+.scale-group { display: flex; justify-content: space-between; max-width: 400px; margin: 10px 0; }
+.scale-item { text-align: center; }
