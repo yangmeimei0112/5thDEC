@@ -1,0 +1,75 @@
+/* 設定中文字體優化 */
+body {
+    font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+}
+
+/* 讓登入畫面在垂直方向真的佔滿螢幕 */
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+/* 讓功能卡片滑鼠移過去有浮起效果 */
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.hover-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* 登入卡片搖晃動畫 (錯誤時使用) */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+.shake-animation {
+    animation: shake 0.3s;
+}
+/* --- 討論區樣式 --- */
+
+/* 訊息氣泡的共用設定 */
+.message-bubble {
+    max-width: 75%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    position: relative;
+    word-wrap: break-word; /* 防止長文字破版 */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* 別人的留言 (靠左、白色) */
+.message-left {
+    align-self: flex-start;
+    background-color: #ffffff;
+    border-bottom-left-radius: 2px; /* 小尖角 */
+    margin-right: auto; /* 靠左 */
+}
+
+/* 自己的留言 (靠右、藍色) */
+.message-right {
+    align-self: flex-end;
+    background-color: #d1e7dd; /* 淺綠色 (類似LINE) */
+    color: #0f5132;
+    border-bottom-right-radius: 2px;
+    margin-left: auto; /* 靠右 */
+}
+
+/* 留言者名字的小字 */
+.message-info {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+    color: #6c757d;
+}
+
+/* 讓聊天容器變成 Flex 排版，方便左右對齊 */
+.chat-wrapper {
+    display: flex;
+    flex-direction: column;
+}
