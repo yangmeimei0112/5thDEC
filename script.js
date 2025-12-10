@@ -54,9 +54,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // 聯絡簿 Enter 監聽
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && e.target) {
-            if (e.target.classList.contains('homework-item')) { e.preventDefault(); addCommInput('homework'); }
-            else if (e.target.classList.contains('exam-item')) { e.preventDefault(); addCommInput('exam'); }
-            else if (e.target.classList.contains('other-item')) { e.preventDefault(); addCommInput('other'); }
+            if (e.target.classList.contains('homework-item')) {
+                e.preventDefault(); addCommInput('homework');
+            } else if (e.target.classList.contains('exam-item')) {
+                e.preventDefault(); addCommInput('exam');
+            } else if (e.target.classList.contains('other-item')) {
+                e.preventDefault(); addCommInput('other');
+            }
         }
     });
 });
@@ -68,7 +72,7 @@ function switchView(viewName) {
     else if(views[viewName]) views[viewName].classList.remove('d-none');
 }
 
-// --- 4. 登入 ---
+// --- 4. 登入 (加入動畫) ---
 document.getElementById('loginBtn').addEventListener('click', handleLogin);
 async function handleLogin() {
     const u = (document.getElementById('username').value || "").trim();
@@ -78,10 +82,27 @@ async function handleLogin() {
         const { data, error } = await supabaseClient.from('users_table').select('*').eq('username', u).eq('password', p).single();
         if (error) throw error;
         currentUserRole = data.role || 'student';
-        enterDashboard(data.username);
-        showSystemMessage(`歡迎回來，${data.username}`, 'success');
+        
+        // 播放歡迎動畫
+        showWelcomeAnimation(data.username);
+        
     } catch(err) { handleError(err, "登入"); shakeCard(); }
 }
+
+function showWelcomeAnimation(username) {
+    const overlay = document.getElementById('welcomeOverlay');
+    overlay.classList.remove('d-none'); // 顯示動畫層
+    
+    // 延遲後切換畫面
+    setTimeout(() => {
+        enterDashboard(username);
+        // 再過一下隱藏動畫層 (讓它滑上去)
+        setTimeout(() => {
+            overlay.classList.add('d-none');
+        }, 4500); // 配合 CSS 動畫總時間
+    }, 100);
+}
+
 function enterDashboard(name) {
     currentUser = name;
     switchView('dashboard');
@@ -90,52 +111,62 @@ function enterDashboard(name) {
 document.getElementById('logoutBtn').addEventListener('click', () => { currentUser = ""; switchView('login'); });
 document.getElementById('guestBtn').addEventListener('click', () => { currentUserRole='student'; enterDashboard("訪客"); });
 window.backToDashboard = () => switchView('dashboard');
+document.getElementById('password').addEventListener('keypress', (e)=>{if(e.key==='Enter') handleLogin()});
 
-// --- H. 聯絡簿 (設計升級版) ---
+// --- H. 聯絡簿 ---
 window.enterCommBook = function() {
     switchView('commBook');
     document.getElementById('commDate').value = new Date().toISOString().split('T')[0];
-    ['homeworkInputs','examInputs','otherInputs'].forEach(id=>document.getElementById(id).innerHTML="");
-    addCommInput('homework'); addCommInput('exam'); addCommInput('other');
-    document.getElementById('commBookAdminPanel').classList.toggle('d-none', currentUserRole !== 'admin');
+    ['homeworkInputs', 'examInputs', 'otherInputs'].forEach(id => document.getElementById(id).innerHTML = "");
+    addCommInput('homework'); 
+    addCommInput('exam');
+    addCommInput('other');
+    if(currentUserRole === 'admin') document.getElementById('commBookAdminPanel').classList.remove('d-none');
+    else document.getElementById('commBookAdminPanel').classList.add('d-none');
     loadCommBookEntries();
 }
 window.addCommInput = function(type) {
-    const div = document.createElement('div'); div.className = 'input-group mb-2';
-    div.innerHTML = `<input type="text" class="form-control ${type}-item" placeholder="輸入事項..."><button class="btn btn-outline-secondary" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
-    document.getElementById(type === 'homework' ? 'homeworkInputs' : (type === 'exam' ? 'examInputs' : 'otherInputs')).appendChild(div);
+    const containerId = type === 'homework' ? 'homeworkInputs' : (type === 'exam' ? 'examInputs' : 'otherInputs');
+    const container = document.getElementById(containerId);
+    const div = document.createElement('div');
+    div.className = 'input-group mb-2';
+    div.innerHTML = `<input type="text" class="form-control ${type}-item" placeholder="${type==='homework'?'作業項目':(type==='exam'?'考試科目':'其他事項')}"><button class="btn btn-outline-secondary" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
+    container.appendChild(div);
     div.querySelector('input').focus();
 }
 window.addCommBookEntry = async function() {
     try {
-        const date = document.getElementById('commDate').value; if(!date) throw new Error("請選擇日期");
+        const date = document.getElementById('commDate').value;
+        if(!date) throw new Error("請選擇日期");
+        
         const hw = Array.from(document.querySelectorAll('.homework-item')).map(i=>(i.value||"").trim()).filter(v=>v).join('\n');
         const ex = Array.from(document.querySelectorAll('.exam-item')).map(i=>(i.value||"").trim()).filter(v=>v).join('\n');
         const ot = Array.from(document.querySelectorAll('.other-item')).map(i=>(i.value||"").trim()).filter(v=>v).join('\n');
+        
         if (!hw && !ex && !ot) throw new Error("請至少輸入一項內容");
         const { error } = await supabaseClient.from('comm_book').insert([{ post_date: date, homework: hw, exams: ex, others: ot, teacher_name: currentUser }]);
-        if (error) throw error; showSystemMessage("發布成功", "success"); enterCommBook();
-    } catch(e) { handleError(e, "發布"); }
+        if (error) throw error;
+        showSystemMessage("發布成功", "success");
+        enterCommBook();
+    } catch(err) { handleError(err, "發布聯絡簿"); }
 }
-
-// [重點優化] 聯絡簿渲染 - 智慧隱藏 + 垂直堆疊
 window.loadCommBookEntries = async function() {
     const container = document.getElementById('commBookList');
     container.innerHTML = '<div class="text-center mt-5"><div class="spinner-border text-warning"></div></div>';
     try {
         const { data, error } = await supabaseClient.from('comm_book').select('*').order('post_date', { ascending: false });
         if (error) throw error;
+        
         container.innerHTML = "";
-        if (!data || data.length === 0) { container.innerHTML = '<div class="text-center py-5 text-muted"><i class="far fa-calendar-times fa-3x mb-3 opacity-50"></i><p>目前沒有聯絡事項</p></div>'; return; }
+        if (!data || data.length === 0) { container.innerHTML = '<p class="text-muted text-center mt-5">📭 無聯絡事項</p>'; return; }
         
         data.forEach(item => {
-            const d = new Date(item.post_date);
-            const dateStr = `${d.getMonth()+1}/${d.getDate()}`;
-            const weekDay = ['週日','週一','週二','週三','週四','週五','週六'][d.getDay()];
-            
-            // 智慧產生內容 (若無內容則不產生HTML區塊)
+            const dateObj = new Date(item.post_date);
+            const day = dateObj.getDate();
+            const month = dateObj.getMonth() + 1;
+            const weekDay = ['週日','週一','週二','週三','週四','週五','週六'][dateObj.getDay()];
+
             let contentHtml = "";
-            
             if(item.homework && item.homework.trim()) {
                 const list = item.homework.split('\n').filter(t=>t.trim()).map(h=>`<li>${h}</li>`).join('');
                 contentHtml += `<div class="comm-section"><div class="section-tag tag-hw">回家作業</div><ul class="comm-list comm-list-homework">${list}</ul></div>`;
@@ -151,28 +182,50 @@ window.loadCommBookEntries = async function() {
             
             if(!contentHtml) contentHtml = `<div class="text-muted text-center py-3 small">本日無詳細內容</div>`;
 
-            const delBtn = currentUserRole==='admin' ? `<button class="btn btn-sm text-danger delete-comm-btn border-0" onclick="deleteCommEntry(${item.id})"><i class="fas fa-trash"></i></button>` : '';
-
             container.innerHTML += `
                 <div class="comm-modern-card">
                     <div class="comm-date-box">
-                        <span class="comm-month">${d.getMonth()+1}月</span>
-                        <span class="comm-day">${d.getDate()}</span>
+                        <span class="comm-month">${month}月</span>
+                        <span class="comm-day">${day}</span>
                         <span class="comm-weekday">${weekDay}</span>
                     </div>
                     <div class="comm-content-box">
                         <div class="comm-meta">
                             <span class="comm-teacher"><i class="fas fa-user-edit me-1"></i> ${item.teacher_name} 老師</span>
-                            ${delBtn}
+                            ${currentUserRole==='admin'?`<button class="btn btn-sm btn-light text-danger" onclick="deleteCommEntry(${item.id})"><i class="fas fa-trash"></i></button>`:''}
                         </div>
                         ${contentHtml}
                     </div>
                 </div>`;
         });
-    } catch(e) { handleError(e, "載入"); container.innerHTML=""; }
+    } catch(err) { handleError(err, "載入聯絡簿"); }
 }
-window.deleteCommEntry = async (id) => { if(confirm("確定刪除？")) { const {error}=await supabaseClient.from('comm_book').delete().eq('id',id); if(!error) loadCommBookEntries(); } }
-// --- 6. 表單建立器 ---
+window.deleteCommEntry = async (id) => { if(confirm("確定刪除？")) { try { const {error} = await supabaseClient.from('comm_book').delete().eq('id',id); if(error) throw error; showSystemMessage("刪除成功","success"); loadCommBookEntries(); } catch(e){ handleError(e,"刪除失敗"); } } }
+
+// --- 5. 表單系統 ---
+window.enterFormSystem = async () => {
+    switchView('formList');
+    document.getElementById('createFormBtn').classList.toggle('d-none', currentUserRole !== 'admin');
+    await loadForms();
+}
+async function loadForms() {
+    const container = document.getElementById('formsContainer');
+    container.innerHTML = '<div class="text-center w-100 mt-5"><div class="spinner-border text-primary"></div></div>';
+    try {
+        const { data: forms, error } = await supabaseClient.from('forms').select('*').order('created_at', { ascending: false });
+        if (error) throw error;
+        container.innerHTML = "";
+        if (!forms || forms.length === 0) { container.innerHTML = '<p class="text-center text-muted">無表單</p>'; return; }
+        forms.forEach(form => {
+            const theme = form.theme || { primaryColor: '#673ab7' };
+            const actions = currentUserRole === 'admin' ? `<div class="mt-3 border-top pt-2 d-flex justify-content-between"><button class="btn btn-sm btn-outline-primary rounded-pill" onclick="viewResults(${form.id}, '${form.title}')"><i class="fas fa-chart-pie"></i> 統計</button><button class="btn btn-sm btn-outline-danger rounded-circle" onclick="deleteForm(${form.id})"><i class="fas fa-trash"></i></button></div>` : "";
+            container.innerHTML += `<div class="col-md-6 col-lg-4"><div class="card h-100 google-card border-0"><div class="card-body"><span class="badge ${form.is_active?'bg-success':'bg-secondary'} mb-2 float-end rounded-pill" style="background-color:${form.is_active?'#34a853':'#6c757d'}!important">${form.is_active?'進行中':'已結束'}</span><h5 class="card-title fw-bold text-truncate" style="color:${theme.primaryColor}">${form.title}</h5><p class="card-text text-muted small mb-3 text-truncate">${form.description||'無說明'}</p><button class="btn btn-outline-primary w-100 rounded-pill" style="color:${theme.primaryColor};border-color:${theme.primaryColor}" onclick="openResponder(${form.id})" ${!form.is_active?'disabled':''}>${form.is_active?'填寫表單':'已截止'}</button>${actions}</div></div></div>`;
+        });
+    } catch(err) { handleError(err, "載入表單"); }
+}
+window.deleteForm = async (id) => { if(confirm("確定刪除？")) { const {error} = await supabaseClient.from('forms').delete().eq('id', id); if(error) handleError(error); else loadForms(); } }
+
+// --- 6. 表單建立 ---
 window.enterFormBuilder = function() {
     switchView('formBuilder');
     document.getElementById('buildTitle').value = "未命名表單";
@@ -180,7 +233,6 @@ window.enterFormBuilder = function() {
     document.getElementById('buildDesc').value = "";
     document.getElementById('questionsContainer').innerHTML = ""; 
     switchBuilderTab('questions');
-    // 重置
     document.getElementById('setLimitOne').checked = false;
     document.getElementById('setAllowEdit').checked = false;
     document.getElementById('setStartTime').value = "";

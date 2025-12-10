@@ -13,6 +13,16 @@
 </head>
 <body class="bg-light">
 
+    <div id="welcomeOverlay" class="d-none">
+        <div class="welcome-content">
+            <div class="icon-container">
+                <i class="fas fa-graduation-cap welcome-icon"></i>
+            </div>
+            <h1 class="welcome-text">歡迎使用</h1>
+            <h2 class="welcome-subtext">數位實驗班整合系統</h2>
+        </div>
+    </div>
+
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
         <div id="systemToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
@@ -65,7 +75,7 @@
                 </div>
             </div>
         </nav>
-        <div class="container pb-5" style="max-width: 800px;">
+        <div class="container pb-5" style="max-width: 900px;">
             
             <div id="commBookAdminPanel" class="card shadow-sm border-0 mb-5 d-none">
                 <div class="card-header bg-warning text-white fw-bold"><i class="fas fa-edit me-2"></i>編輯聯絡簿</div>
@@ -74,7 +84,7 @@
                     <div class="row g-3">
                         <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-primary mb-3">📘 作業</h6><div id="homeworkInputs"></div><button class="btn btn-sm btn-outline-primary mt-2 w-100" onclick="addCommInput('homework')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
                         <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-danger mb-3">📝 考試</h6><div id="examInputs"></div><button class="btn btn-sm btn-outline-danger mt-2 w-100" onclick="addCommInput('exam')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
-                        <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-success mb-3">📌 其餘事項</h6><div id="otherInputs"></div><button class="btn btn-sm btn-outline-success mt-2 w-100" onclick="addCommInput('other')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
+                        <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-success mb-3">📌 其他事項</h6><div id="otherInputs"></div><button class="btn btn-sm btn-outline-success mt-2 w-100" onclick="addCommInput('other')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
                     </div>
                     <div class="d-flex justify-content-end mt-4">
                         <button class="btn btn-warning text-white fw-bold px-4 rounded-pill" onclick="addCommBookEntry()">發布更新</button>
@@ -83,7 +93,6 @@
             </div>
             
             <h5 class="fw-bold text-secondary mb-4 ps-3 border-start border-5 border-warning">每日聯絡簿</h5>
-            
             <div id="commBookList" class="d-flex flex-column gap-4"></div>
         </div>
     </div>
@@ -101,10 +110,7 @@
     <div id="formBuilderView" class="d-none min-vh-100" style="background-color: #f0ebf8;">
         <nav class="navbar navbar-light bg-white px-3 border-bottom sticky-top" style="z-index: 1030;">
             <div class="container-fluid d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center">
-                    <button class="btn btn-icon me-3" onclick="enterFormSystem()"><i class="fas fa-arrow-left" style="color:#5f6368;"></i></button>
-                    <span class="navbar-text text-dark fw-bold" id="headerFormTitle">未命名表單</span>
-                </div>
+                <div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="enterFormSystem()"><i class="fas fa-arrow-left" style="color:#5f6368;"></i></button><span class="navbar-text text-dark fw-bold" id="headerFormTitle">未命名表單</span></div>
                 <div class="d-flex gap-2 align-items-center">
                     <button class="btn btn-icon" title="自訂主題" onclick="toggleThemeSidebar()"><i class="fas fa-palette"></i></button>
                     <button class="btn btn-icon" title="預覽" onclick="previewForm()"><i class="far fa-eye"></i></button>
