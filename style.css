@@ -1,239 +1,122 @@
-/* --- Google Form 風格全域設定 (含變數) --- */
-:root {
-    --theme-color: #673ab7; 
-    --theme-bg: #f0ebf8;    
-}
-
-body { font-family: 'Roboto', 'Segoe UI', 'Microsoft JhengHei', sans-serif; background-color: var(--theme-bg); }
+/* --- 全域設定 --- */
+:root { --theme-color: #673ab7; --theme-bg: #f0ebf8; }
+body { font-family: 'Roboto', 'Segoe UI', sans-serif; background-color: var(--theme-bg); }
 .min-vh-100 { min-height: 100vh; }
 
-/* 應用主題變數 */
-.theme-bg { background-color: var(--theme-bg) !important; }
-.border-top-purple { border-top: 10px solid var(--theme-color); border-top-left-radius: 8px; border-top-right-radius: 8px; }
-.theme-btn { background-color: var(--theme-color) !important; border-color: var(--theme-color) !important; }
-.theme-color-bg { background-color: var(--theme-color) !important; }
-
-/* 卡片樣式 */
-.google-card {
+/* 聯絡簿 2.0 現代化樣式 */
+.comm-modern-card {
     background: #fff;
-    border: 1px solid #dadce0;
-    border-radius: 8px;
-    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
-    margin-bottom: 12px;
-    transition: box-shadow 0.2s;
-}
-
-/* 聯絡簿卡片樣式 */
-.comm-card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     overflow: hidden;
+    border: 1px solid #edf2f7;
+    display: flex;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
-.comm-header { background: #ffc107; color: #fff; padding: 10px 20px; font-weight: bold; }
-.comm-body { padding: 20px; }
-.comm-list-homework li::marker { color: #0d6efd; content: "📘 "; }
-.comm-list-exam li::marker { color: #dc3545; content: "📝 "; }
+.comm-modern-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
 
-/* 設定頁面樣式 */
-.form-check-input:checked { background-color: var(--theme-color); border-color: var(--theme-color); }
-.text-muted { color: #5f6368 !important; }
+/* 左側日期區塊 */
+.comm-date-box {
+    background: #f8f9fa;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    border-right: 1px solid #edf2f7;
+}
+.comm-month { font-size: 0.85rem; color: #718096; text-transform: uppercase; letter-spacing: 1px; }
+.comm-day { font-size: 2rem; font-weight: 800; color: #2d3748; line-height: 1; }
+.comm-weekday { font-size: 0.9rem; color: #718096; margin-top: 4px; }
 
-/* 編輯器左側藍色邊條 */
-.question-card { border-left: 6px solid transparent; transition: all 0.2s; position: relative; }
-.question-card:focus-within, .question-card:hover { border-left-color: #4285f4; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+/* 右側內容區塊 */
+.comm-content-box { flex-grow: 1; padding: 25px; }
+.comm-meta { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dashed #eee; padding-bottom: 10px; }
+.comm-teacher { font-size: 0.85rem; color: #a0aec0; }
 
-/* 動態選項輸入框 */
-.dynamic-option { border: none !important; border-bottom: 1px solid #ddd !important; border-radius: 0 !important; background: transparent; padding: 5px 0; }
-.dynamic-option:focus { border-bottom: 2px solid var(--theme-color) !important; box-shadow: none !important; background: #f8f9fa; }
-.add-option-link { color: #666; cursor: pointer; padding: 5px 10px; display: inline-block; font-size: 0.9rem; margin-top: 5px; }
-.add-option-link:hover { background-color: #f1f3f4; border-radius: 4px; }
-.add-other-link { color: #1a73e8; font-weight: 500; }
+/* 內容分類標籤與清單 (垂直堆疊) */
+.comm-section { margin-bottom: 20px; }
+.comm-section:last-child { margin-bottom: 0; }
+.section-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.tag-hw { background: #ebf8ff; color: #3182ce; }
+.tag-exam { background: #fff5f5; color: #e53e3e; }
+.tag-other { background: #f0fff4; color: #38a169; }
 
-/* 懸浮工具列 */
-.floating-sidebar { position: fixed; right: max(20px, calc(50% - 460px)); top: 180px; display: flex; flex-direction: column; background: white; padding: 10px 5px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 1050; }
-@media (max-width: 900px) { .floating-sidebar { position: fixed; bottom: 20px; right: 20px; top: auto; flex-direction: row; gap: 10px; padding: 5px 15px; border-radius: 50px; } }
+.comm-list { padding-left: 5px; margin: 0; list-style: none; }
+.comm-list li { 
+    margin-bottom: 8px; 
+    color: #4a5568; 
+    line-height: 1.6; 
+    font-size: 1rem;
+    padding-left: 20px;
+    position: relative;
+}
+.comm-list li::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #cbd5e0;
+}
+.tag-hw + .comm-list li::before { background-color: #3182ce; }
+.tag-exam + .comm-list li::before { background-color: #e53e3e; }
+.tag-other + .comm-list li::before { background-color: #38a169; }
 
-/* 主題側邊欄 */
-.theme-sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: white; z-index: 1060; padding: 20px; transition: right 0.3s ease; overflow-y: auto; }
-.theme-sidebar.show { right: 0; }
-.color-palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.color-circle { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; border: 2px solid white; box-shadow: 0 0 3px rgba(0,0,0,0.3); }
-.color-circle:hover { transform: scale(1.1); }
-
-/* 標題與說明輸入框 */
-.title-input { border-bottom: 1px solid #e0e0e0 !important; border-radius: 0; padding: 5px 0; }
-.title-input:focus { border-bottom: 2px solid var(--theme-color) !important; box-shadow: none; }
-.desc-input { border-bottom: 1px solid #e0e0e0 !important; border-radius: 0; resize: none; font-size: 0.9rem; }
-.desc-input:focus { border-bottom: 1px solid #e0e0e0 !important; box-shadow: none; }
-
-/* 頂部 Tab */
-.google-tabs { display: flex; gap: 20px; font-size: 0.9rem; font-weight: 500; color: #5f6368; text-transform: uppercase; }
-.google-tabs .tab { padding: 10px 15px; cursor: pointer; border-bottom: 3px solid transparent; }
-.google-tabs .tab.active { color: var(--theme-color); border-bottom-color: var(--theme-color); }
+/* 刪除按鈕 */
+.delete-comm-btn { opacity: 0.5; transition: opacity 0.2s; }
+.delete-comm-btn:hover { opacity: 1; }
 
 /* 錯誤提示 (Toast) */
 .bg-danger-toast { background-color: #dc3545; }
 .bg-success-toast { background-color: #198754; }
 
-/* 通用元件 */
-.btn-icon { border: none; background: transparent; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+/* Google 卡片 & 通用 */
+.google-card { background: #fff; border: 1px solid #dadce0; border-radius: 8px; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3); margin-bottom: 12px; transition: box-shadow 0.2s; }
+.border-top-purple { border-top: 10px solid var(--theme-color); border-top-left-radius: 8px; border-top-right-radius: 8px; }
+.theme-btn { background-color: var(--theme-color) !important; border-color: var(--theme-color) !important; }
+.theme-color-bg { background-color: var(--theme-color) !important; }
+.form-check-input:checked { background-color: var(--theme-color); border-color: var(--theme-color); }
+.text-muted { color: #5f6368 !important; }
+.question-card { border-left: 6px solid transparent; transition: all 0.2s; position: relative; }
+.question-card:focus-within, .question-card:hover { border-left-color: #4285f4; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.dynamic-option { border: none !important; border-bottom: 1px solid #ddd !important; border-radius: 0 !important; background: transparent; padding: 5px 0; }
+.dynamic-option:focus { border-bottom: 2px solid var(--theme-color) !important; }
+.add-option-link { color: #666; cursor: pointer; padding: 5px 10px; display: inline-block; margin-top: 5px; }
+.add-option-link:hover { background-color: #f1f3f4; border-radius: 4px; }
+.title-input { border-bottom: 1px solid #e0e0e0 !important; border-radius: 0; padding: 5px 0; }
+.title-input:focus { border-bottom: 2px solid var(--theme-color) !important; box-shadow: none; }
+.desc-input { border-bottom: 1px solid #e0e0e0 !important; border-radius: 0; resize: none; }
+.desc-input:focus { border-bottom: 1px solid #e0e0e0 !important; box-shadow: none; }
+.floating-sidebar { position: fixed; right: max(20px, calc(50% - 460px)); top: 180px; display: flex; flex-direction: column; background: white; padding: 10px 5px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 1050; }
+@media (max-width: 900px) { .floating-sidebar { position: fixed; bottom: 20px; right: 20px; top: auto; flex-direction: row; gap: 10px; padding: 5px 15px; border-radius: 50px; } }
+.google-tabs { display: flex; gap: 20px; font-weight: 500; color: #5f6368; text-transform: uppercase; }
+.google-tabs .tab { padding: 10px 15px; cursor: pointer; border-bottom: 3px solid transparent; }
+.google-tabs .tab.active { color: var(--theme-color); border-bottom-color: var(--theme-color); }
+.theme-sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: white; z-index: 1060; padding: 20px; transition: right 0.3s ease; }
+.theme-sidebar.show { right: 0; }
+.color-circle { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; border: 2px solid white; box-shadow: 0 0 3px rgba(0,0,0,0.3); }
+.btn-icon { border: none; background: transparent; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; }
 .btn-icon:hover { background-color: rgba(60,64,67,0.08); }
-.remove-opt-btn { color: #5f6368; }
-.remove-opt-btn:hover { color: #d93025; }
 .hover-card { transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
 .hover-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
-@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } 100% { transform: translateX(0); } }
-.shake-animation { animation: shake 0.3s; }
 .message-bubble { max-width: 75%; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; }
 .message-left { align-self: flex-start; background: #fff; margin-right: auto; }
 .message-right { align-self: flex-end; background: #d1e7dd; color: #0f5132; margin-left: auto; }
 .chat-wrapper { display: flex; flex-direction: column; }
 .chart-container { position: relative; height: 300px; width: 100%; }
-/* --- 親師聯絡簿 2.0 (質感升級版) --- */
-
-/* 外層容器優化 */
-#commBookList {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* 卡片本體 */
-.comm-entry {
-    background: #fff;
-    border-radius: 12px;
-    border: 1px solid #edf2f7;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
-}
-
-.comm-entry:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.08);
-}
-
-/* 頂部日期條 (Header) */
-.comm-header-bar {
-    background: linear-gradient(to right, #f8f9fa, #fff);
-    padding: 12px 20px;
-    border-bottom: 1px solid #edf2f7;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* 日期顯示設計 */
-.comm-date-badge {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    color: #2d3748;
-}
-
-.comm-date-day {
-    font-size: 1.4rem;
-    font-weight: 800;
-    font-family: 'Segoe UI', sans-serif;
-    color: #4a5568;
-}
-
-.comm-date-meta {
-    font-size: 0.9rem;
-    color: #718096;
-    font-weight: 500;
-}
-
-/* 內容區域 */
-.comm-content-body {
-    padding: 20px;
-}
-
-/* 分區標題 */
-.section-title {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.title-hw { color: #4299e1; } /* 藍色系 */
-.title-exam { color: #e53e3e; } /* 紅色系 */
-
-/* 列表樣式 (取代原本的 ul/li) */
-.task-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.task-item {
-    position: relative;
-    padding: 8px 0 8px 24px;
-    border-bottom: 1px dashed #edf2f7;
-    color: #4a5568;
-    font-size: 1rem;
-    line-height: 1.5;
-}
-
-.task-item:last-child {
-    border-bottom: none;
-}
-
-/* 偽元素製作 Checkbox 圖示 */
-.task-item::before {
-    content: '\f0c8'; /* square icon */
-    font-family: "Font Awesome 6 Free";
-    font-weight: 400;
-    position: absolute;
-    left: 0;
-    top: 10px;
-    font-size: 0.9rem;
-    color: #cbd5e0;
-    transition: color 0.2s;
-}
-
-.task-item:hover::before {
-    content: '\f14a'; /* check-square icon */
-    font-weight: 900;
-    color: #4299e1;
-}
-
-/* 考試項目的特殊樣式 */
-.exam-item {
-    padding: 8px 12px;
-    background-color: #fff5f5;
-    border-left: 3px solid #fc8181;
-    border-radius: 0 4px 4px 0;
-    margin-bottom: 6px;
-    color: #c53030;
-    font-weight: 500;
-}
-
-/* 底部資訊 */
-.comm-footer {
-    padding: 10px 20px;
-    background-color: #f7fafc;
-    border-top: 1px solid #edf2f7;
-    font-size: 0.85rem;
-    color: #a0aec0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-/* 空狀態 */
-.empty-state-text {
-    font-style: italic;
-    color: #cbd5e0;
-    font-size: 0.9rem;
-}
+@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } 100% { transform: translateX(0); } }
+.shake-animation { animation: shake 0.3s; }

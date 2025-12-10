@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>數位學習實驗班 - 完整系統</title>
+    <title>數位學習實驗班 - 整合系統</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -31,6 +31,7 @@
                 <div class="form-floating mb-3"><input type="text" class="form-control" id="username" placeholder="學號"><label>帳號</label></div>
                 <div class="form-floating mb-4"><input type="password" class="form-control" id="password" placeholder="密碼"><label>密碼</label></div>
                 <button class="btn btn-primary w-100 py-2 fs-5 mb-3 rounded-pill" id="loginBtn">登入系統</button>
+                <div id="msgBox" class="text-danger small" style="min-height: 20px;"></div>
                 <div class="d-flex justify-content-between mt-4 small text-secondary">
                     <a href="#" id="guestBtn" class="text-decoration-none text-secondary">訪客試用</a><span>|</span><a href="#" id="devBtn" class="text-decoration-none text-secondary">開發者管理</a>
                 </div>
@@ -49,7 +50,7 @@
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
                 <div class="col"><div class="card h-100 border-0 shadow-sm hover-card" onclick="alert('功能開發中')"><div class="card-body text-center py-5"><div class="icon-box bg-info text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;"><i class="fas fa-folder-open fa-2x"></i></div><h5 class="card-title fw-bold">課程資料夾</h5></div></div></div>
                 <div class="col"><div class="card h-100 border-0 shadow-sm hover-card" onclick="enterFormSystem()"><div class="card-body text-center py-5"><div class="icon-box bg-success text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;"><i class="fas fa-poll-h fa-2x"></i></div><h5 class="card-title fw-bold">Google 表單</h5><p class="card-text text-muted small">問卷 / 測驗 / 統計</p></div></div></div>
-                <div class="col"><div class="card h-100 border-0 shadow-sm hover-card" onclick="enterCommBook()"><div class="card-body text-center py-5"><div class="icon-box bg-warning text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;"><i class="fas fa-book-open fa-2x"></i></div><h5 class="card-title fw-bold">親師聯絡簿</h5><p class="card-text text-muted small">作業與考試提醒</p></div></div></div>
+                <div class="col"><div class="card h-100 border-0 shadow-sm hover-card" onclick="enterCommBook()"><div class="card-body text-center py-5"><div class="icon-box bg-warning text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;"><i class="fas fa-book-open fa-2x"></i></div><h5 class="card-title fw-bold">聯絡簿</h5><p class="card-text text-muted small">作業 / 考試 / 事項</p></div></div></div>
                 <div class="col"><div class="card h-100 border-0 shadow-sm hover-card" onclick="enterDiscuss()"><div class="card-body text-center py-5"><div class="icon-box bg-secondary text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;"><i class="fas fa-comments fa-2x"></i></div><h5 class="card-title fw-bold">討論區</h5></div></div></div>
             </div>
         </div>
@@ -58,23 +59,32 @@
     <div id="commBookView" class="d-none min-vh-100 bg-light">
         <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4 sticky-top">
             <div class="container">
-                <div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold text-warning"><i class="fas fa-book-open me-2"></i>親師聯絡簿</h5></div>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button>
+                    <h5 class="mb-0 fw-bold text-warning"><i class="fas fa-book-open me-2"></i>聯絡簿</h5>
+                </div>
             </div>
         </nav>
         <div class="container pb-5" style="max-width: 800px;">
-            <div id="commBookAdminPanel" class="card shadow-sm border-0 mb-4 d-none">
-                <div class="card-header bg-warning text-white fw-bold"><i class="fas fa-edit me-2"></i>發布新事項</div>
+            
+            <div id="commBookAdminPanel" class="card shadow-sm border-0 mb-5 d-none">
+                <div class="card-header bg-warning text-white fw-bold"><i class="fas fa-edit me-2"></i>編輯聯絡簿</div>
                 <div class="card-body">
                     <div class="mb-3"><label class="form-label fw-bold">日期</label><input type="date" id="commDate" class="form-control w-auto"></div>
                     <div class="row g-3">
-                        <div class="col-md-6"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-primary mb-3">📘 回家作業</h6><div id="homeworkInputs"></div><button class="btn btn-sm btn-outline-primary mt-2 w-100" onclick="addCommInput('homework')"><i class="fas fa-plus"></i> 新增作業 (Enter)</button></div></div>
-                        <div class="col-md-6"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-danger mb-3">📝 明日考試</h6><div id="examInputs"></div><button class="btn btn-sm btn-outline-danger mt-2 w-100" onclick="addCommInput('exam')"><i class="fas fa-plus"></i> 新增考試 (Enter)</button></div></div>
+                        <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-primary mb-3">📘 作業</h6><div id="homeworkInputs"></div><button class="btn btn-sm btn-outline-primary mt-2 w-100" onclick="addCommInput('homework')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
+                        <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-danger mb-3">📝 考試</h6><div id="examInputs"></div><button class="btn btn-sm btn-outline-danger mt-2 w-100" onclick="addCommInput('exam')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
+                        <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-success mb-3">📌 其餘事項</h6><div id="otherInputs"></div><button class="btn btn-sm btn-outline-success mt-2 w-100" onclick="addCommInput('other')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
                     </div>
-                    <div class="d-flex justify-content-end mt-4"><button class="btn btn-warning text-white fw-bold px-4 rounded-pill" onclick="addCommBookEntry()">發布聯絡簿</button></div>
+                    <div class="d-flex justify-content-end mt-4">
+                        <button class="btn btn-warning text-white fw-bold px-4 rounded-pill" onclick="addCommBookEntry()">發布更新</button>
+                    </div>
                 </div>
             </div>
-            <h5 class="fw-bold text-secondary mb-3">歷史紀錄</h5>
-            <div id="commBookList"></div>
+            
+            <h5 class="fw-bold text-secondary mb-4 ps-3 border-start border-5 border-warning">每日聯絡簿</h5>
+            
+            <div id="commBookList" class="d-flex flex-column gap-4"></div>
         </div>
     </div>
 
@@ -91,9 +101,13 @@
     <div id="formBuilderView" class="d-none min-vh-100" style="background-color: #f0ebf8;">
         <nav class="navbar navbar-light bg-white px-3 border-bottom sticky-top" style="z-index: 1030;">
             <div class="container-fluid d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="enterFormSystem()"><i class="fas fa-arrow-left" style="color:#5f6368;"></i></button><span class="navbar-text text-dark fw-bold" id="headerFormTitle">未命名表單</span></div>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-icon me-3" onclick="enterFormSystem()"><i class="fas fa-arrow-left" style="color:#5f6368;"></i></button>
+                    <span class="navbar-text text-dark fw-bold" id="headerFormTitle">未命名表單</span>
+                </div>
                 <div class="d-flex gap-2 align-items-center">
                     <button class="btn btn-icon" title="自訂主題" onclick="toggleThemeSidebar()"><i class="fas fa-palette"></i></button>
+                    <button class="btn btn-icon" title="預覽" onclick="previewForm()"><i class="far fa-eye"></i></button>
                     <button class="btn btn-icon" title="復原" onclick="performUndo()"><i class="fas fa-undo"></i></button>
                     <button class="btn btn-icon" title="重做" onclick="performRedo()"><i class="fas fa-redo"></i></button>
                     <button class="btn btn-icon" title="設定" onclick="switchBuilderTab('settings')"><i class="fas fa-cog"></i></button>
@@ -126,19 +140,32 @@
                         <div class="mb-4">
                             <h5 class="fw-bold mb-1" style="font-size: 1.1rem;">回覆</h5>
                             <div class="text-muted small mb-3">管理收集與保護回覆的方式</div>
-                            <div class="d-flex justify-content-between align-items-center py-2"><div><div class="fw-normal">允許編輯回覆</div></div><div class="form-check form-switch fs-5"><input class="form-check-input" type="checkbox" id="setAllowEdit" style="cursor: pointer;"></div></div>
-                            <div class="my-2 border-top"></div>
-                            <div class="d-flex justify-content-between align-items-center py-2"><div><div class="fw-normal">僅限回覆 1 次</div></div><div class="form-check form-switch fs-5"><input class="form-check-input" type="checkbox" id="setLimitOne" style="cursor: pointer;"></div></div>
+                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <div><div class="fw-normal">允許編輯回覆</div></div>
+                                <div class="form-check form-switch fs-5"><input class="form-check-input" type="checkbox" id="setAllowEdit" style="cursor: pointer;"></div>
+                            </div>
+                            <div class="text-muted small mt-3 mb-1">需要登入</div>
+                            <div class="d-flex justify-content-between align-items-center py-2">
+                                <div><div class="fw-normal">僅限回覆 1 次</div></div>
+                                <div class="form-check form-switch fs-5"><input class="form-check-input" type="checkbox" id="setLimitOne" style="cursor: pointer;"></div>
+                            </div>
                         </div>
                         <div class="border-top my-4"></div>
                         <div>
                             <h5 class="fw-bold mb-1" style="font-size: 1.1rem;">表單排程</h5>
-                            <div class="row g-3 align-items-center"><div class="col-md-6"><label class="form-label small text-muted">開始時間</label><input type="datetime-local" class="form-control" id="setStartTime"></div><div class="col-md-6"><label class="form-label small text-muted">結束時間</label><input type="datetime-local" class="form-control" id="setEndTime"></div></div>
+                            <div class="text-muted small mb-3">設定表單的開放時間</div>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-6"><label class="form-label small text-muted">開始時間</label><input type="datetime-local" class="form-control" id="setStartTime"></div>
+                                <div class="col-md-6"><label class="form-label small text-muted">結束時間</label><input type="datetime-local" class="form-control" id="setEndTime"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="builderResponsesPanel" class="d-none text-center pt-5"><div class="card google-card p-5"><h4 class="fw-bold text-muted">表單發布後才能查看回覆</h4><p>請前往大廳點選「統計」按鈕。</p></div></div>
+
+            <div id="builderResponsesPanel" class="d-none text-center pt-5">
+                <div class="card google-card p-5"><h4 class="fw-bold text-muted">表單發布後才能查看回覆</h4><p>請前往大廳點選「統計」按鈕。</p></div>
+            </div>
         </div>
 
         <div id="floatingToolbar" class="floating-sidebar">
