@@ -1,0 +1,4 @@
+.message-bubble { max-width: 75%; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; }
+.message-left { align-self: flex-start; background: #fff; margin-right: auto; }
+.message-right { align-self: flex-end; background: #d1e7dd; color: #0f5132; margin-left: auto; }
+.chat-wrapper { display: flex; flex-direction: column; }

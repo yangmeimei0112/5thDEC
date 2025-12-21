@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>數位學習實驗班 - 完整系統</title>
+    <title>數位學習實驗班 - 整合系統</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="style.css">
-</head>
+
+    <link rel="stylesheet" href="css/global.css">
+    
+    <link rel="stylesheet" href="modules/contact/contact.css">
+    <link rel="stylesheet" href="modules/forms/forms.css">
+    <link rel="stylesheet" href="modules/discuss/discuss.css">
+    </head>
 <body class="bg-light">
 
     <div id="welcomeOverlay" class="d-none">
@@ -22,10 +28,7 @@
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
         <div id="systemToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body" id="toastMessage"></div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-            </div>
+            <div class="d-flex"><div class="toast-body" id="toastMessage"></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>
         </div>
     </div>
 
@@ -50,7 +53,11 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
             <div class="container">
                 <a class="navbar-brand fw-bold" href="#"><i class="fas fa-graduation-cap me-2"></i>數位實驗班</a>
-                <div class="d-flex align-items-center text-white"><span id="welcomeText" class="me-3 d-none d-md-block">同學你好</span><button class="btn btn-outline-light btn-sm rounded-pill" id="logoutBtn">登出</button></div>
+                <div class="d-flex align-items-center text-white">
+                    <span id="welcomeText" class="me-3 d-none d-md-block">同學你好</span>
+                    <button class="btn btn-outline-light btn-sm rounded-pill me-2" onclick="enterProfile()"><i class="fas fa-user-circle me-1"></i> 個人頁面</button>
+                    <button class="btn btn-outline-light btn-sm rounded-pill" id="logoutBtn">登出</button>
+                </div>
             </div>
         </nav>
         <div class="container">
@@ -63,15 +70,32 @@
         </div>
     </div>
 
+    <div id="profileView" class="d-none min-vh-100 bg-light">
+        <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4">
+            <div class="container"><div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold text-primary"><i class="fas fa-id-card me-2"></i>個人資料</h5></div></div>
+        </nav>
+        <div class="container pb-5" style="max-width: 600px;">
+            <div class="card google-card border-0 shadow-sm"><div class="card-body p-4">
+                <div class="text-center mb-4"><div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;"><i class="fas fa-user"></i></div><h4 class="fw-bold" id="profileDisplayId">學號</h4></div>
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="form-label fw-bold">學號 (不可修改)</label><input type="text" class="form-control bg-light" id="profileId" readonly></div>
+                    <div class="col-md-6"><label class="form-label fw-bold">班級座號</label><input type="text" class="form-control" id="profileClassSeat" placeholder="例如：101-05"></div>
+                    <div class="col-md-6"><label class="form-label fw-bold">真實姓名</label><input type="text" class="form-control" id="profileRealName" placeholder="輸入姓名"></div>
+                    <div class="col-md-6"><label class="form-label fw-bold">顯示暱稱</label><input type="text" class="form-control" id="profileNickname" placeholder="輸入暱稱"></div>
+                    <div class="col-12"><label class="form-label fw-bold">自我介紹 (選填)</label><textarea class="form-control" id="profileBio" rows="3" placeholder="寫點什麼..."></textarea></div>
+                </div>
+                <div class="d-flex justify-content-end mt-4"><button class="btn btn-primary px-4 rounded-pill" onclick="saveProfile()"><i class="fas fa-save me-2"></i>儲存變更</button></div>
+            </div></div>
+        </div>
+    </div>
+
     <div id="commBookView" class="d-none min-vh-100 bg-light">
         <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4 sticky-top">
-            <div class="container">
-                <div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold text-warning"><i class="fas fa-book-open me-2"></i>聯絡簿</h5></div>
-            </div>
+            <div class="container"><div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold text-warning"><i class="fas fa-book-open me-2"></i>聯絡簿</h5></div></div>
         </nav>
-        <div class="container pb-5" style="max-width: 800px;">
-            <div id="commBookAdminPanel" class="card shadow-sm border-0 mb-4 d-none">
-                <div class="card-header bg-warning text-white fw-bold"><i class="fas fa-edit me-2"></i>發布新事項</div>
+        <div class="container pb-5" style="max-width: 850px;">
+            <div id="commBookAdminPanel" class="card shadow-sm border-0 mb-5 d-none">
+                <div class="card-header bg-warning text-white fw-bold"><i class="fas fa-edit me-2"></i>編輯聯絡簿</div>
                 <div class="card-body">
                     <div class="mb-3"><label class="form-label fw-bold">日期</label><input type="date" id="commDate" class="form-control w-auto"></div>
                     <div class="row g-3">
@@ -79,21 +103,16 @@
                         <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-danger mb-3">📝 考試</h6><div id="examInputs"></div><button class="btn btn-sm btn-outline-danger mt-2 w-100" onclick="addCommInput('exam')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
                         <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-success mb-3">📌 其他</h6><div id="otherInputs"></div><button class="btn btn-sm btn-outline-success mt-2 w-100" onclick="addCommInput('other')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
                     </div>
-                    <div class="d-flex justify-content-end mt-4"><button class="btn btn-warning text-white fw-bold px-4 rounded-pill" onclick="addCommBookEntry()">發布聯絡簿</button></div>
+                    <div class="d-flex justify-content-end mt-4"><button class="btn btn-warning text-white fw-bold px-4 rounded-pill" onclick="addCommBookEntry()">發布更新</button></div>
                 </div>
             </div>
-            <h5 class="fw-bold text-secondary mb-3 ps-2 border-start border-4 border-warning">每日聯絡簿</h5>
-            <div id="commBookList" class="d-flex flex-column gap-3"></div>
+            <h5 class="fw-bold text-secondary mb-4 ps-2 border-start border-4 border-warning">每日待辦清單</h5>
+            <div id="commBookList" class="d-flex flex-column gap-4"></div>
         </div>
     </div>
 
     <div id="formListView" class="d-none min-vh-100 bg-light">
-        <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4">
-            <div class="container d-flex justify-content-between">
-                <div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold text-secondary">所有表單</h5></div>
-                <button id="createFormBtn" class="btn btn-primary d-none rounded-pill px-4" onclick="enterFormBuilder()"><i class="fas fa-plus me-2"></i>建立新表單</button>
-            </div>
-        </nav>
+        <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4"><div class="container d-flex justify-content-between"><div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold text-secondary">所有表單</h5></div><button id="createFormBtn" class="btn btn-primary d-none rounded-pill px-4" onclick="enterFormBuilder()"><i class="fas fa-plus me-2"></i>建立新表單</button></div></nav>
         <div class="container"><div id="formsContainer" class="row g-4"></div></div>
     </div>
 
@@ -101,39 +120,19 @@
         <nav class="navbar navbar-light bg-white px-3 border-bottom sticky-top" style="z-index: 1030;">
             <div class="container-fluid d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="enterFormSystem()"><i class="fas fa-arrow-left" style="color:#5f6368;"></i></button><span class="navbar-text text-dark fw-bold" id="headerFormTitle">未命名表單</span></div>
-                <div class="d-flex gap-2 align-items-center">
-                    <button class="btn btn-icon" title="自訂主題" onclick="toggleThemeSidebar()"><i class="fas fa-palette"></i></button>
-                    <button class="btn btn-icon" title="預覽" onclick="previewForm()"><i class="far fa-eye"></i></button>
-                    <button class="btn btn-icon" title="復原" onclick="performUndo()"><i class="fas fa-undo"></i></button>
-                    <button class="btn btn-icon" title="重做" onclick="performRedo()"><i class="fas fa-redo"></i></button>
-                    <button class="btn btn-icon" title="設定" onclick="switchBuilderTab('settings')"><i class="fas fa-cog"></i></button>
-                    <button class="btn btn-primary px-4 rounded-pill fw-bold ms-2" onclick="saveNewForm()">發布</button>
-                </div>
+                <div class="d-flex gap-2 align-items-center"><button class="btn btn-icon" title="自訂主題" onclick="toggleThemeSidebar()"><i class="fas fa-palette"></i></button><button class="btn btn-icon" title="預覽" onclick="previewForm()"><i class="far fa-eye"></i></button><button class="btn btn-icon" title="復原" onclick="performUndo()"><i class="fas fa-undo"></i></button><button class="btn btn-icon" title="重做" onclick="performRedo()"><i class="fas fa-redo"></i></button><button class="btn btn-icon" title="設定" onclick="switchBuilderTab('settings')"><i class="fas fa-cog"></i></button><button class="btn btn-primary px-4 rounded-pill fw-bold ms-2" onclick="saveNewForm()">發布</button></div>
             </div>
-            <div class="container-fluid justify-content-center mt-2">
-                <div class="google-tabs"><div class="tab active" id="tabQuestions" onclick="switchBuilderTab('questions')">問題</div><div class="tab" id="tabResponses" onclick="switchBuilderTab('responses')">回覆</div><div class="tab" id="tabSettings" onclick="switchBuilderTab('settings')">設定</div></div>
-            </div>
+            <div class="container-fluid justify-content-center mt-2"><div class="google-tabs"><div class="tab active" id="tabQuestions" onclick="switchBuilderTab('questions')">問題</div><div class="tab" id="tabResponses" onclick="switchBuilderTab('responses')">回覆</div><div class="tab" id="tabSettings" onclick="switchBuilderTab('settings')">設定</div></div></div>
         </nav>
         <div class="container mt-4 pb-5" style="max-width: 770px;">
             <div id="builderQuestionsPanel">
-                <div class="card google-card border-top-purple mb-3">
-                    <div class="card-body p-4">
-                        <input type="text" id="buildTitle" class="form-control form-control-lg border-0 fs-1 fw-bold mb-2 title-input" placeholder="未命名表單" value="未命名表單" oninput="document.getElementById('headerFormTitle').innerText=this.value; recordHistory();">
-                        <textarea id="buildDesc" class="form-control border-0 desc-input" placeholder="表單說明" rows="1"></textarea>
-                    </div>
-                </div>
+                <div class="card google-card border-top-purple mb-3"><div class="card-body p-4"><input type="text" id="buildTitle" class="form-control form-control-lg border-0 fs-1 fw-bold mb-2 title-input" placeholder="未命名表單" value="未命名表單" oninput="document.getElementById('headerFormTitle').innerText=this.value; recordHistory();"><textarea id="buildDesc" class="form-control border-0 desc-input" placeholder="表單說明" rows="1"></textarea></div></div>
                 <div id="questionsContainer"></div>
             </div>
             <div id="builderSettingsPanel" class="d-none">
                 <div class="card google-card"><div class="card-body pt-3 pb-4">
-                    <div class="mb-4">
-                        <h5 class="fw-bold mb-1" style="font-size: 1.1rem;">回覆</h5>
-                        <div class="d-flex justify-content-between align-items-center py-2"><div><div class="fw-normal">允許編輯回覆</div></div><div class="form-check form-switch fs-5"><input class="form-check-input" type="checkbox" id="setAllowEdit" style="cursor: pointer;"></div></div>
-                        <div class="my-2 border-top"></div>
-                        <div class="d-flex justify-content-between align-items-center py-2"><div><div class="fw-normal">僅限回覆 1 次</div></div><div class="form-check form-switch fs-5"><input class="form-check-input" type="checkbox" id="setLimitOne" style="cursor: pointer;"></div></div>
-                    </div>
-                    <div class="border-top my-4"></div>
-                    <div><h5 class="fw-bold mb-1" style="font-size: 1.1rem;">表單排程</h5><div class="row g-3 align-items-center"><div class="col-md-6"><label class="form-label small text-muted">開始時間</label><input type="datetime-local" class="form-control" id="setStartTime"></div><div class="col-md-6"><label class="form-label small text-muted">結束時間</label><input type="datetime-local" class="form-control" id="setEndTime"></div></div></div>
+                    <div class="mb-4"><h5 class="fw-bold mb-1" style="font-size: 1.1rem;">回覆</h5><div class="d-flex justify-content-between align-items-center py-2"><div><div class="fw-normal">允許編輯回覆</div></div><div class="form-check form-switch fs-5"><input class="form-check-input" type="checkbox" id="setAllowEdit" style="cursor: pointer;"></div></div><div class="my-2 border-top"></div><div class="d-flex justify-content-between align-items-center py-2"><div><div class="fw-normal">僅限回覆 1 次</div></div><div class="form-check form-switch fs-5"><input class="form-check-input" type="checkbox" id="setLimitOne" style="cursor: pointer;"></div></div></div>
+                    <div class="border-top my-4"></div><div><h5 class="fw-bold mb-1" style="font-size: 1.1rem;">表單排程</h5><div class="row g-3 align-items-center"><div class="col-md-6"><label class="form-label small text-muted">開始時間</label><input type="datetime-local" class="form-control" id="setStartTime"></div><div class="col-md-6"><label class="form-label small text-muted">結束時間</label><input type="datetime-local" class="form-control" id="setEndTime"></div></div></div>
                 </div></div>
             </div>
             <div id="builderResponsesPanel" class="d-none text-center pt-5"><div class="card google-card p-5"><h4 class="fw-bold text-muted">表單發布後才能查看回覆</h4><p>請前往大廳點選「統計」按鈕。</p></div></div>
@@ -157,6 +156,17 @@
     <div class="modal fade" id="devModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header bg-dark text-white"><h5 class="modal-title">開發者後台</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><h6 class="fw-bold">使用者列表</h6><ul id="userList" class="list-group mb-3" style="max-height: 200px; overflow-y: auto;"></ul><hr><h6 class="fw-bold">新增使用者</h6><div class="row g-2"><div class="col-4"><input type="text" class="form-control" id="newUsername" placeholder="帳號"></div><div class="col-4"><input type="text" class="form-control" id="newPassword" placeholder="密碼"></div><div class="col-4"><select class="form-select" id="newRole"><option value="student">學生</option><option value="admin">管理者</option></select></div><div class="col-12 mt-2"><button class="btn btn-primary w-100" onclick="addNewUser()">新增</button></div></div></div></div></div></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+    
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script src="modules/auth/auth.js"></script>
+    <script src="modules/dashboard/dashboard.js"></script>
+    <script src="modules/contact/contact.js"></script>
+    <script src="modules/forms/forms.js"></script>
+    <script src="modules/discuss/discuss.js"></script>
+    <script src="modules/profile/profile.js"></script>
+
 </body>
 </html>

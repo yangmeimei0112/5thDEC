@@ -1,0 +1,35 @@
+:root { --theme-color: #673ab7; --theme-bg: #f0ebf8; }
+body { font-family: 'Roboto', 'Segoe UI', sans-serif; background-color: var(--theme-bg); }
+.min-vh-100 { min-height: 100vh; }
+
+/* 歡迎動畫 */
+#welcomeOverlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+    animation: fadeOutSlide 1s ease-in-out 4s forwards;
+}
+.welcome-content { text-align: center; color: white; }
+.welcome-icon { font-size: 4rem; margin-bottom: 20px; animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.welcome-text { font-size: 2.5rem; font-weight: bold; overflow: hidden; white-space: nowrap; border-right: 3px solid white; width: 0; animation: typing 1.5s steps(30, end) 0.5s forwards, blink .75s step-end infinite; }
+.welcome-subtext { font-size: 1.2rem; opacity: 0; animation: fadeIn 1s ease-in 1.5s forwards; }
+
+@keyframes typing { from { width: 0 } to { width: 100% } }
+@keyframes blink { from, to { border-color: transparent } 50% { border-color: white } }
+@keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeOutSlide { to { transform: translateY(-100%); opacity: 0; visibility: hidden; } }
+
+/* Toast */
+.bg-danger-toast { background-color: #dc3545; }
+.bg-success-toast { background-color: #198754; }
+
+/* 通用元件 */
+.google-card { background: #fff; border: 1px solid #dadce0; border-radius: 8px; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3); margin-bottom: 12px; transition: box-shadow 0.2s; }
+.btn-icon { border: none; background: transparent; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+.btn-icon:hover { background-color: rgba(60,64,67,0.08); }
+.hover-card { transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+.hover-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
+@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } 100% { transform: translateX(0); } }
+.shake-animation { animation: shake 0.3s; }

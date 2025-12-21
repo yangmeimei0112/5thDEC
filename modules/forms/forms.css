@@ -1,0 +1,23 @@
+.border-top-purple { border-top: 10px solid var(--theme-color); border-top-left-radius: 8px; border-top-right-radius: 8px; }
+.theme-btn { background-color: var(--theme-color) !important; border-color: var(--theme-color) !important; }
+.theme-color-bg { background-color: var(--theme-color) !important; }
+.theme-bg { background-color: var(--theme-bg) !important; }
+.form-check-input:checked { background-color: var(--theme-color); border-color: var(--theme-color); }
+.question-card { border-left: 6px solid transparent; transition: all 0.2s; position: relative; }
+.question-card:focus-within { border-left-color: #4285f4; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.dynamic-option { border: none !important; border-bottom: 1px solid #ddd !important; border-radius: 0 !important; background: transparent; padding: 5px 0; }
+.dynamic-option:focus { border-bottom: 2px solid var(--theme-color) !important; }
+.add-option-link { color: #666; cursor: pointer; padding: 5px 10px; display: inline-block; margin-top: 5px; }
+.floating-sidebar { position: fixed; right: max(20px, calc(50% - 460px)); top: 180px; display: flex; flex-direction: column; background: white; padding: 10px 5px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 1050; }
+@media (max-width: 900px) { .floating-sidebar { position: fixed; bottom: 20px; right: 20px; top: auto; flex-direction: row; gap: 10px; padding: 5px 15px; border-radius: 50px; } }
+.google-tabs { display: flex; gap: 20px; font-weight: 500; color: #5f6368; text-transform: uppercase; }
+.google-tabs .tab { padding: 10px 15px; cursor: pointer; border-bottom: 3px solid transparent; }
+.google-tabs .tab.active { color: var(--theme-color); border-bottom-color: var(--theme-color); }
+.theme-sidebar { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: white; z-index: 1060; padding: 20px; transition: right 0.3s ease; }
+.theme-sidebar.show { right: 0; }
+.color-circle { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; border: 2px solid white; box-shadow: 0 0 3px rgba(0,0,0,0.3); }
+.title-input { border-bottom: 1px solid #e0e0e0 !important; border-radius: 0; padding: 5px 0; }
+.title-input:focus { border-bottom: 2px solid var(--theme-color) !important; box-shadow: none; }
+.desc-input { border-bottom: 1px solid #e0e0e0 !important; border-radius: 0; resize: none; }
+.desc-input:focus { border-bottom: 1px solid #e0e0e0 !important; box-shadow: none; }
+.chart-container { position: relative; height: 300px; width: 100%; }

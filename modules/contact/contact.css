@@ -1,0 +1,22 @@
+/* 聯絡簿 2.0 */
+.comm-modern-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); overflow: hidden; border: 1px solid #edf2f7; display: flex; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
+.comm-modern-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+.comm-date-box { background: #f8f9fa; padding: 20px 15px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-width: 90px; border-right: 1px solid #eee; }
+.comm-day { font-size: 2rem; font-weight: 800; color: #2d3748; line-height: 1; margin: 5px 0; }
+.comm-month, .comm-weekday { font-size: 0.9rem; color: #718096; }
+.comm-content-box { flex-grow: 1; padding: 25px; }
+.comm-meta { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dashed #eee; padding-bottom: 10px; }
+.comm-teacher { font-size: 0.85rem; color: #a0aec0; }
+.comm-section { margin-bottom: 20px; }
+.comm-section:last-child { margin-bottom: 0; }
+.comm-section-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; padding-bottom: 5px; border-bottom: 2px solid transparent; }
+.title-hw { color: #2563eb; border-color: #dbeafe; } .title-exam { color: #dc2626; border-color: #fee2e2; } .title-other { color: #059669; border-color: #d1fae5; }
+.comm-checklist { list-style: none; padding: 0; margin: 0 0 20px 0; }
+.checklist-item { padding: 10px 15px; margin-bottom: 8px; background: #f8f9fa; border-radius: 8px; border: 1px solid #eee; color: #374151; cursor: pointer; transition: 0.2s; display: flex; align-items: flex-start; gap: 12px; user-select: none; }
+.checklist-item:hover { background: #fff; border-color: #cbd5e0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.check-circle { min-width: 20px; height: 20px; border: 2px solid #cbd5e0; border-radius: 6px; margin-top: 2px; position: relative; transition: 0.2s; }
+.checklist-item.checked .check-circle { background-color: #10b981; border-color: #10b981; }
+.checklist-item.checked .check-circle::after { content: '✓'; color: white; font-size: 14px; position: absolute; top: -2px; left: 3px; font-weight: bold; }
+.checklist-item.checked span { text-decoration: line-through; color: #9ca3af; }
+.delete-comm-btn { position: absolute; top: 10px; right: 10px; opacity: 0.2; transition: 0.2s; }
+.comm-modern-card:hover .delete-comm-btn { opacity: 1; }
