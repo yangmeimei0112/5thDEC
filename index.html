@@ -15,7 +15,8 @@
     <link rel="stylesheet" href="modules/contact/contact.css">
     <link rel="stylesheet" href="modules/forms/forms.css">
     <link rel="stylesheet" href="modules/discuss/discuss.css">
-    </head>
+    <link rel="stylesheet" href="modules/profile/profile.css">
+    <link rel="stylesheet" href="modules/admin/admin.css"> </head>
 <body class="bg-light">
 
     <div id="welcomeOverlay" class="d-none">
@@ -62,6 +63,22 @@
         </nav>
         <div class="container">
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                
+                <div class="col d-none" id="adminDashboardCard">
+                    <div class="card h-100 border-0 shadow-sm hover-card admin-stats-card" onclick="enterAdminPanel()">
+                        <div class="card-body text-center py-5">
+                            <div class="icon-box bg-dark text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="fas fa-users-cog fa-2x"></i>
+                            </div>
+                            <h5 class="card-title fw-bold text-dark">後台管理</h5>
+                            <div class="mt-2 text-muted small">
+                                <div>總人數: <span id="adminTotalUsers" class="fw-bold text-primary">-</span></div>
+                                <div>線上人數: <span id="adminOnlineUsers" class="fw-bold text-success">-</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col"><div class="card h-100 border-0 shadow-sm hover-card" onclick="alert('功能開發中')"><div class="card-body text-center py-5"><div class="icon-box bg-info text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;"><i class="fas fa-folder-open fa-2x"></i></div><h5 class="card-title fw-bold">課程資料夾</h5></div></div></div>
                 <div class="col"><div class="card h-100 border-0 shadow-sm hover-card" onclick="enterFormSystem()"><div class="card-body text-center py-5"><div class="icon-box bg-success text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;"><i class="fas fa-poll-h fa-2x"></i></div><h5 class="card-title fw-bold">Google 表單</h5><p class="card-text text-muted small">問卷 / 測驗 / 統計</p></div></div></div>
                 <div class="col"><div class="card h-100 border-0 shadow-sm hover-card" onclick="enterCommBook()"><div class="card-body text-center py-5"><div class="icon-box bg-warning text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;"><i class="fas fa-book-open fa-2x"></i></div><h5 class="card-title fw-bold">聯絡簿</h5><p class="card-text text-muted small">作業 / 考試 / 事項</p></div></div></div>
@@ -70,68 +87,103 @@
         </div>
     </div>
 
-<div id="profileView" class="d-none min-vh-100 bg-light">
+    <div id="adminManageView" class="d-none min-vh-100 bg-light">
         <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4 sticky-top">
             <div class="container">
                 <div class="d-flex align-items-center">
                     <button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button>
-                    <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-id-card me-2"></i>個人檔案</h5>
+                    <h5 class="mb-0 fw-bold text-dark"><i class="fas fa-users-cog me-2"></i>使用者管理</h5>
+                </div>
+                <div class="d-flex gap-3 text-secondary small">
+                    <span>總人數: <b id="adminManageTotal" class="text-dark">-</b></span>
+                    <span>線上: <b id="adminManageOnline" class="text-success">-</b></span>
                 </div>
             </div>
         </nav>
-
-        <div class="container pb-5" style="max-width: 700px;">
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card google-card text-center p-4 h-100">
-                        <div class="profile-avatar mb-3 mx-auto">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <h5 class="fw-bold mb-1" id="displayNickname">學號</h5>
-                        <p class="text-muted small mb-3" id="displayId">@username</p>
-                        <div class="badge bg-primary rounded-pill mb-2" id="displayRole">學生</div>
-                    </div>
-                </div>
-
-                <div class="col-md-8">
-                    <div class="card google-card h-100">
-                        <div class="card-body p-4">
-                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">基本資料</h6>
-                            <div class="row g-3 mb-4">
-                                <div class="col-md-6">
-                                    <label class="form-label small text-muted">學號 (不可修改)</label>
-                                    <input type="text" class="form-control bg-light" id="profileId" readonly>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small text-muted">真實姓名</label>
-                                    <input type="text" class="form-control" id="profileRealName" placeholder="王小明">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small text-muted">班級座號</label>
-                                    <input type="text" class="form-control" id="profileClassSeat" placeholder="例: 101-05">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small text-muted">顯示暱稱</label>
-                                    <input type="text" class="form-control" id="profileNickname" placeholder="顯示在首頁的名字">
-                                </div>
-                            </div>
-
-                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">個人簡介</h6>
-                            <div class="mb-3">
-                                <textarea class="form-control" id="profileBio" rows="4" placeholder="寫點什麼來介紹自己..."></textarea>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <button class="btn btn-primary px-4 rounded-pill" onclick="saveProfile()">
-                                    <i class="fas fa-save me-2"></i>儲存變更
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+        <div class="container pb-5">
+            <div class="user-table-container">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">狀態</th>
+                                <th>學號</th>
+                                <th>姓名</th>
+                                <th>班級座號</th>
+                                <th>暱稱</th>
+                                <th>權限</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+                            </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="adminEditUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">修改使用者資料</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">學號 (帳號)</label>
+                        <input type="text" class="form-control bg-light" id="editTargetUsername" readonly>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label">真實姓名</label>
+                            <input type="text" class="form-control" id="editTargetRealName">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">班級座號</label>
+                            <input type="text" class="form-control" id="editTargetClassSeat" placeholder="例: 101-05">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">顯示暱稱</label>
+                        <input type="text" class="form-control" id="editTargetNickname">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">權限角色</label>
+                        <select class="form-select" id="editTargetRole">
+                            <option value="student">學生</option>
+                            <option value="admin">管理者</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveAdminUserChanges()">儲存變更</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="profileView" class="d-none min-vh-100 bg-light">
+        <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4">
+            <div class="container"><div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold text-primary"><i class="fas fa-id-card me-2"></i>個人資料</h5></div></div>
+        </nav>
+        <div class="container pb-5" style="max-width: 600px;">
+            <div class="card google-card border-0 shadow-sm"><div class="card-body p-4">
+                <div class="text-center mb-4"><div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;"><i class="fas fa-user"></i></div><h4 class="fw-bold" id="profileDisplayId">學號</h4></div>
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="form-label fw-bold">學號 (不可修改)</label><input type="text" class="form-control bg-light" id="profileId" readonly></div>
+                    <div class="col-md-6"><label class="form-label fw-bold">班級座號</label><input type="text" class="form-control" id="profileClassSeat" placeholder="例如：101-05"></div>
+                    <div class="col-md-6"><label class="form-label fw-bold">真實姓名</label><input type="text" class="form-control" id="profileRealName" placeholder="輸入姓名"></div>
+                    <div class="col-md-6"><label class="form-label fw-bold">顯示暱稱</label><input type="text" class="form-control" id="profileNickname" placeholder="輸入暱稱"></div>
+                    <div class="col-12"><label class="form-label fw-bold">自我介紹 (選填)</label><textarea class="form-control" id="profileBio" rows="3" placeholder="寫點什麼..."></textarea></div>
+                </div>
+                <div class="d-flex justify-content-end mt-4"><button class="btn btn-primary px-4 rounded-pill" onclick="saveProfile()"><i class="fas fa-save me-2"></i>儲存變更</button></div>
+            </div></div>
+        </div>
+    </div>
+
     <div id="commBookView" class="d-none min-vh-100 bg-light">
         <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4 sticky-top">
             <div class="container"><div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold text-warning"><i class="fas fa-book-open me-2"></i>聯絡簿</h5></div></div>
@@ -144,7 +196,7 @@
                     <div class="row g-3">
                         <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-primary mb-3">📘 作業</h6><div id="homeworkInputs"></div><button class="btn btn-sm btn-outline-primary mt-2 w-100" onclick="addCommInput('homework')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
                         <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-danger mb-3">📝 考試</h6><div id="examInputs"></div><button class="btn btn-sm btn-outline-danger mt-2 w-100" onclick="addCommInput('exam')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
-                        <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-success mb-3">📌 其他</h6><div id="otherInputs"></div><button class="btn btn-sm btn-outline-success mt-2 w-100" onclick="addCommInput('other')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
+                        <div class="col-md-4"><div class="p-3 bg-light rounded border h-100"><h6 class="fw-bold text-success mb-3">📌 其他事項</h6><div id="otherInputs"></div><button class="btn btn-sm btn-outline-success mt-2 w-100" onclick="addCommInput('other')"><i class="fas fa-plus"></i> 新增 (Enter)</button></div></div>
                     </div>
                     <div class="d-flex justify-content-end mt-4"><button class="btn btn-warning text-white fw-bold px-4 rounded-pill" onclick="addCommBookEntry()">發布更新</button></div>
                 </div>
@@ -158,58 +210,22 @@
         <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4"><div class="container d-flex justify-content-between"><div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold text-secondary">所有表單</h5></div><button id="createFormBtn" class="btn btn-primary d-none rounded-pill px-4" onclick="enterFormBuilder()"><i class="fas fa-plus me-2"></i>建立新表單</button></div></nav>
         <div class="container"><div id="formsContainer" class="row g-4"></div></div>
     </div>
-
-    <div id="formBuilderView" class="d-none min-vh-100" style="background-color: #f0ebf8;">
-        <nav class="navbar navbar-light bg-white px-3 border-bottom sticky-top" style="z-index: 1030;">
-            <div class="container-fluid d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="enterFormSystem()"><i class="fas fa-arrow-left" style="color:#5f6368;"></i></button><span class="navbar-text text-dark fw-bold" id="headerFormTitle">未命名表單</span></div>
-                <div class="d-flex gap-2 align-items-center"><button class="btn btn-icon" title="自訂主題" onclick="toggleThemeSidebar()"><i class="fas fa-palette"></i></button><button class="btn btn-icon" title="預覽" onclick="previewForm()"><i class="far fa-eye"></i></button><button class="btn btn-icon" title="復原" onclick="performUndo()"><i class="fas fa-undo"></i></button><button class="btn btn-icon" title="重做" onclick="performRedo()"><i class="fas fa-redo"></i></button><button class="btn btn-icon" title="設定" onclick="switchBuilderTab('settings')"><i class="fas fa-cog"></i></button><button class="btn btn-primary px-4 rounded-pill fw-bold ms-2" onclick="saveNewForm()">發布</button></div>
-            </div>
-            <div class="container-fluid justify-content-center mt-2"><div class="google-tabs"><div class="tab active" id="tabQuestions" onclick="switchBuilderTab('questions')">問題</div><div class="tab" id="tabResponses" onclick="switchBuilderTab('responses')">回覆</div><div class="tab" id="tabSettings" onclick="switchBuilderTab('settings')">設定</div></div></div>
-        </nav>
-        <div class="container mt-4 pb-5" style="max-width: 770px;">
-            <div id="builderQuestionsPanel">
-                <div class="card google-card border-top-purple mb-3"><div class="card-body p-4"><input type="text" id="buildTitle" class="form-control form-control-lg border-0 fs-1 fw-bold mb-2 title-input" placeholder="未命名表單" value="未命名表單" oninput="document.getElementById('headerFormTitle').innerText=this.value; recordHistory();"><textarea id="buildDesc" class="form-control border-0 desc-input" placeholder="表單說明" rows="1"></textarea></div></div>
-                <div id="questionsContainer"></div>
-            </div>
-            <div id="builderSettingsPanel" class="d-none">
-                <div class="card google-card"><div class="card-body pt-3 pb-4">
-                    <div class="mb-4"><h5 class="fw-bold mb-1" style="font-size: 1.1rem;">回覆</h5><div class="d-flex justify-content-between align-items-center py-2"><div><div class="fw-normal">允許編輯回覆</div></div><div class="form-check form-switch fs-5"><input class="form-check-input" type="checkbox" id="setAllowEdit" style="cursor: pointer;"></div></div><div class="my-2 border-top"></div><div class="d-flex justify-content-between align-items-center py-2"><div><div class="fw-normal">僅限回覆 1 次</div></div><div class="form-check form-switch fs-5"><input class="form-check-input" type="checkbox" id="setLimitOne" style="cursor: pointer;"></div></div></div>
-                    <div class="border-top my-4"></div><div><h5 class="fw-bold mb-1" style="font-size: 1.1rem;">表單排程</h5><div class="row g-3 align-items-center"><div class="col-md-6"><label class="form-label small text-muted">開始時間</label><input type="datetime-local" class="form-control" id="setStartTime"></div><div class="col-md-6"><label class="form-label small text-muted">結束時間</label><input type="datetime-local" class="form-control" id="setEndTime"></div></div></div>
-                </div></div>
-            </div>
-            <div id="builderResponsesPanel" class="d-none text-center pt-5"><div class="card google-card p-5"><h4 class="fw-bold text-muted">表單發布後才能查看回覆</h4><p>請前往大廳點選「統計」按鈕。</p></div></div>
-        </div>
-        <div id="floatingToolbar" class="floating-sidebar"><button class="btn btn-light shadow-sm rounded-circle mb-3 p-2" title="新增問題" onclick="addQuestionCard('radio')"><i class="fas fa-plus-circle fa-lg text-secondary"></i></button><button class="btn btn-light shadow-sm rounded-circle mb-3 p-2" title="新增文字說明" onclick="addQuestionCard('text')"><i class="fas fa-font fa-lg text-secondary"></i></button><button class="btn btn-light shadow-sm rounded-circle mb-3 p-2" title="新增區段" onclick="addSectionBreak()"><i class="fas fa-grip-lines fa-lg text-secondary"></i></button></div>
-        <div id="themeSidebar" class="theme-sidebar shadow"><div class="d-flex justify-content-between align-items-center mb-4"><h5 class="m-0 fw-bold"><i class="fas fa-palette me-2"></i>主題選項</h5><button class="btn btn-icon" onclick="toggleThemeSidebar()"><i class="fas fa-times"></i></button></div><div class="mb-4"><label class="form-label fw-bold">顏色</label><div class="color-palette"><div class="color-circle" style="background:#db4437" onclick="updateThemeColor('#db4437', '#fae3e1')"></div><div class="color-circle" style="background:#673ab7" onclick="updateThemeColor('#673ab7', '#f0ebf8')"><i class="fas fa-check text-white"></i></div><div class="color-circle" style="background:#3f51b5" onclick="updateThemeColor('#3f51b5', '#e8eaf6')"></div><div class="color-circle" style="background:#4285f4" onclick="updateThemeColor('#4285f4', '#e3f2fd')"></div><div class="color-circle" style="background:#03a9f4" onclick="updateThemeColor('#03a9f4', '#e1f5fe')"></div><div class="color-circle" style="background:#009688" onclick="updateThemeColor('#009688', '#e0f2f1')"></div><div class="color-circle" style="background:#4caf50" onclick="updateThemeColor('#4caf50', '#e8f5e9')"></div><div class="color-circle" style="background:#ff9800" onclick="updateThemeColor('#ff9800', '#fff3e0')"></div><div class="color-circle" style="background:#607d8b" onclick="updateThemeColor('#607d8b', '#eceff1')"></div></div></div></div>
-    </div>
-
-    <div id="formResponderView" class="d-none min-vh-100 theme-bg">
-        <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4 sticky-top"><div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="enterFormSystem()"><i class="fas fa-times"></i></button><h5 class="mb-0 fw-bold">填寫表單</h5></div></nav>
-        <div class="container pb-5" style="max-width: 640px;"><div class="card google-card border-top-purple mb-3"><div class="card-body p-4"><h1 id="viewFormTitle" class="fw-bold mb-3 fs-2"></h1><p id="viewFormDesc" class="text-muted"></p><div class="small text-danger border-top pt-2 mt-3">* 為必填項目</div></div></div><div class="progress mb-4" style="height: 4px;"><div id="formProgressBar" class="progress-bar theme-color-bg" role="progressbar" style="width: 0%"></div></div><form id="responderForm"><div id="viewQuestionsArea"></div></form><div class="d-flex justify-content-between mt-4"><button class="btn btn-outline-secondary px-4 d-none rounded-3" id="prevSectionBtn" onclick="navSection(-1)">返回</button><button class="btn btn-primary px-4 rounded-3 theme-btn" id="nextSectionBtn" onclick="navSection(1)">繼續</button><button class="btn btn-primary px-4 d-none rounded-3 theme-btn" id="submitFormBtn" onclick="submitFormResponse()">提交</button></div></div>
-    </div>
-
-    <div id="formResultView" class="d-none min-vh-100 bg-light">
-        <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4 sticky-top"><div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="enterFormSystem()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold">回應分析</h5></div><div class="btn-group"><button class="btn btn-outline-primary active" id="btnViewSummary" onclick="switchResultTab('summary')">摘要</button><button class="btn btn-outline-primary" id="btnViewIndividual" onclick="switchResultTab('individual')">個別</button><button class="btn btn-success" onclick="exportToExcel()">匯出</button></div></nav>
-        <div class="container pb-5" style="max-width: 900px;"><h3 id="resultTitle" class="fw-bold mb-4 text-center"></h3><div id="resultSummaryArea"><div id="chartsContainer" class="row g-4"></div></div><div id="resultIndividualArea" class="d-none"><div class="card google-card mb-3"><div class="card-body d-flex justify-content-between align-items-center"><button class="btn btn-icon" onclick="navIndividual(-1)"><i class="fas fa-chevron-left"></i></button><span class="fw-bold">第 <span id="indivIndex">1</span> 筆，共 <span id="indivTotal">0</span> 筆</span><button class="btn btn-icon" onclick="navIndividual(1)"><i class="fas fa-chevron-right"></i></button></div></div><div id="individualContent" class="card google-card p-4"></div></div></div>
-    </div>
-
-    <div id="discussView" class="d-none vh-100 flex-column bg-light"><nav class="navbar navbar-light bg-white shadow-sm px-3 flex-shrink-0"><div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold">班級討論區</h5></div><button class="btn btn-sm btn-light" onclick="loadMessages()"><i class="fas fa-sync-alt"></i></button></nav><div id="chatContainer" class="flex-grow-1 p-3 overflow-auto"></div><div class="p-3 bg-white border-top flex-shrink-0"><div class="input-group"><input type="text" id="msgInput" class="form-control" placeholder="輸入留言..."><button class="btn btn-primary" onclick="sendMessage()">傳送</button></div></div></div>
+    <div id="formBuilderView" class="d-none min-vh-100" style="background-color: #f0ebf8;"></div>
+    <div id="formResponderView" class="d-none min-vh-100 theme-bg"></div>
+    <div id="formResultView" class="d-none min-vh-100 bg-light"></div>
+    <div id="discussView" class="d-none vh-100 flex-column bg-light"></div>
     
     <div class="modal fade" id="devModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header bg-dark text-white"><h5 class="modal-title">開發者後台</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body"><h6 class="fw-bold">使用者列表</h6><ul id="userList" class="list-group mb-3" style="max-height: 200px; overflow-y: auto;"></ul><hr><h6 class="fw-bold">新增使用者</h6><div class="row g-2"><div class="col-4"><input type="text" class="form-control" id="newUsername" placeholder="帳號"></div><div class="col-4"><input type="text" class="form-control" id="newPassword" placeholder="密碼"></div><div class="col-4"><select class="form-select" id="newRole"><option value="student">學生</option><option value="admin">管理者</option></select></div><div class="col-12 mt-2"><button class="btn btn-primary w-100" onclick="addNewUser()">新增</button></div></div></div></div></div></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script src="js/config.js"></script>
     <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
-    
     <script src="modules/auth/auth.js"></script>
     <script src="modules/dashboard/dashboard.js"></script>
     <script src="modules/contact/contact.js"></script>
     <script src="modules/forms/forms.js"></script>
     <script src="modules/discuss/discuss.js"></script>
     <script src="modules/profile/profile.js"></script>
-
-</body>
+    <script src="modules/admin/admin.js"></script> </body>
 </html>
