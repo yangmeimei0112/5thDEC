@@ -1,4 +1,84 @@
-.message-bubble { max-width: 75%; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; }
-.message-left { align-self: flex-start; background: #fff; margin-right: auto; }
-.message-right { align-self: flex-end; background: #d1e7dd; color: #0f5132; margin-left: auto; }
-.chat-wrapper { display: flex; flex-direction: column; }
+/* 聊天室容器 */
+#chatContainer {
+    background-color: #e5ddd5; /* 類似 WhatsApp 背景色 */
+    padding: 20px;
+    height: calc(100vh - 130px); /* 扣除頂部導覽列與底部輸入框 */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 20px;
+}
+
+/* 訊息行 */
+.message-row {
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
+}
+
+.message-left {
+    align-self: flex-start;
+}
+
+.message-right {
+    align-self: flex-end;
+    align-items: flex-end;
+}
+
+/* 發訊者名字 */
+.message-sender {
+    font-size: 0.8rem;
+    color: #555;
+    margin-bottom: 4px;
+    margin-left: 5px;
+}
+
+/* 氣泡本體 */
+.message-content {
+    position: relative;
+}
+
+.message-bubble {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    position: relative;
+    word-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* 自己的訊息 (綠色) */
+.message-bubble.me {
+    background-color: #dcf8c6;
+    color: #000;
+    border-top-right-radius: 0;
+}
+
+/* 他人的訊息 (白色) */
+.message-bubble.other {
+    background-color: #fff;
+    color: #000;
+    border-top-left-radius: 0;
+}
+
+/* 時間戳記 */
+.message-time {
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 4px;
+    text-align: right;
+}
+
+/* 底部輸入區 */
+.discuss-footer {
+    background: #f0f0f0;
+    padding: 10px 20px;
+    border-top: 1px solid #ddd;
+}
