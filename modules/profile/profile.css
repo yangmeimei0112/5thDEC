@@ -25,7 +25,42 @@
 /* 讓唯讀輸入框看起來更像靜態文字 */
 input[readonly] {
     background-color: #f8f9fa !important;
+    color: #6c757d;/* 個人頁面專用樣式 */
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
+}
+
+#displayNickname {
+    font-family: 'Segoe UI', sans-serif;
+    color: #2d3748;
+}
+
+#displayId {
+    font-family: monospace;
+    color: #718096;
+}
+
+/* 讓唯讀輸入框看起來更像靜態文字 */
+input[readonly] {
+    background-color: #f8f9fa !important;
     color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* 標籤微調 */
+.form-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
     cursor: not-allowed;
 }
 
