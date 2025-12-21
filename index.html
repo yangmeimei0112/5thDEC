@@ -70,25 +70,68 @@
         </div>
     </div>
 
-    <div id="profileView" class="d-none min-vh-100 bg-light">
-        <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4">
-            <div class="container"><div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold text-primary"><i class="fas fa-id-card me-2"></i>個人資料</h5></div></div>
-        </nav>
-        <div class="container pb-5" style="max-width: 600px;">
-            <div class="card google-card border-0 shadow-sm"><div class="card-body p-4">
-                <div class="text-center mb-4"><div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;"><i class="fas fa-user"></i></div><h4 class="fw-bold" id="profileDisplayId">學號</h4></div>
-                <div class="row g-3">
-                    <div class="col-md-6"><label class="form-label fw-bold">學號 (不可修改)</label><input type="text" class="form-control bg-light" id="profileId" readonly></div>
-                    <div class="col-md-6"><label class="form-label fw-bold">班級座號</label><input type="text" class="form-control" id="profileClassSeat" placeholder="例如：101-05"></div>
-                    <div class="col-md-6"><label class="form-label fw-bold">真實姓名</label><input type="text" class="form-control" id="profileRealName" placeholder="輸入姓名"></div>
-                    <div class="col-md-6"><label class="form-label fw-bold">顯示暱稱</label><input type="text" class="form-control" id="profileNickname" placeholder="輸入暱稱"></div>
-                    <div class="col-12"><label class="form-label fw-bold">自我介紹 (選填)</label><textarea class="form-control" id="profileBio" rows="3" placeholder="寫點什麼..."></textarea></div>
+<div id="profileView" class="d-none min-vh-100 bg-light">
+        <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4 sticky-top">
+            <div class="container">
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button>
+                    <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-id-card me-2"></i>個人檔案</h5>
                 </div>
-                <div class="d-flex justify-content-end mt-4"><button class="btn btn-primary px-4 rounded-pill" onclick="saveProfile()"><i class="fas fa-save me-2"></i>儲存變更</button></div>
-            </div></div>
+            </div>
+        </nav>
+
+        <div class="container pb-5" style="max-width: 700px;">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card google-card text-center p-4 h-100">
+                        <div class="profile-avatar mb-3 mx-auto">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h5 class="fw-bold mb-1" id="displayNickname">學號</h5>
+                        <p class="text-muted small mb-3" id="displayId">@username</p>
+                        <div class="badge bg-primary rounded-pill mb-2" id="displayRole">學生</div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card google-card h-100">
+                        <div class="card-body p-4">
+                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">基本資料</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label small text-muted">學號 (不可修改)</label>
+                                    <input type="text" class="form-control bg-light" id="profileId" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small text-muted">真實姓名</label>
+                                    <input type="text" class="form-control" id="profileRealName" placeholder="王小明">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small text-muted">班級座號</label>
+                                    <input type="text" class="form-control" id="profileClassSeat" placeholder="例: 101-05">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small text-muted">顯示暱稱</label>
+                                    <input type="text" class="form-control" id="profileNickname" placeholder="顯示在首頁的名字">
+                                </div>
+                            </div>
+
+                            <h6 class="fw-bold text-secondary mb-3 border-bottom pb-2">個人簡介</h6>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="profileBio" rows="4" placeholder="寫點什麼來介紹自己..."></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-primary px-4 rounded-pill" onclick="saveProfile()">
+                                    <i class="fas fa-save me-2"></i>儲存變更
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
     <div id="commBookView" class="d-none min-vh-100 bg-light">
         <nav class="navbar navbar-light bg-white shadow-sm px-3 mb-4 sticky-top">
             <div class="container"><div class="d-flex align-items-center"><button class="btn btn-icon me-3" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i></button><h5 class="mb-0 fw-bold text-warning"><i class="fas fa-book-open me-2"></i>聯絡簿</h5></div></div>
